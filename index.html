@@ -1,0 +1,1004 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TheFamilyFood - Authentic Family Restaurant</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500;600;700&family=Kalam:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .handwriting { font-family: 'Dancing Script', cursive; }
+        .casual { font-family: 'Kalam', cursive; }
+        
+        /* Opening Animation */
+        .opening-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #dc2626, #ea580c, #d97706);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            animation: fadeOut 3s ease-in-out 2s forwards;
+        }
+        
+        .logo-animation {
+            text-align: center;
+            animation: slideUp 2s ease-out;
+        }
+        
+        @keyframes slideUp {
+            0% { opacity: 0; transform: translateY(50px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes fadeOut {
+            0% { opacity: 1; }
+            100% { opacity: 0; visibility: hidden; }
+        }
+        
+        /* Page transitions */
+        .page {
+            display: none;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        
+        .page.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+        
+        /* Interactive elements */
+        .hover-lift {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .hover-lift:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(220, 38, 38, 0.2);
+        }
+        
+        /* Image styling */
+        .restaurant-image {
+            object-fit: cover;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+        
+        .restaurant-image:hover {
+            transform: scale(1.02);
+            box-shadow: 0 8px 25px rgba(220, 38, 38, 0.15);
+        }
+        
+        /* Logo styling */
+        .logo-image {
+            width: 40px;
+            height: 40px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+        
+        /* Menu category cards */
+        .menu-category {
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        
+        .menu-category:hover {
+            border-color: #dc2626;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(220, 38, 38, 0.15);
+        }
+        
+        .menu-category.active {
+            border-color: #dc2626;
+            background: linear-gradient(135deg, #fef2f2, #fee2e2);
+        }
+        
+        /* Gallery styles */
+        .gallery-item {
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            overflow: hidden;
+        }
+        
+        .gallery-item:hover {
+            transform: scale(1.05);
+        }
+        
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal.active {
+            display: flex;
+        }
+        
+        /* Map styles */
+        .map-container {
+            position: relative;
+            background: linear-gradient(135deg, #f3f4f6, #e5e7eb);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        
+        .map-pin {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: #dc2626;
+            border-radius: 50% 50% 50% 0;
+            transform: rotate(-45deg);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .map-pin:hover {
+            transform: rotate(-45deg) scale(1.2);
+            box-shadow: 0 4px 15px rgba(220, 38, 38, 0.4);
+        }
+        
+        .map-tooltip {
+            position: absolute;
+            background: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            font-size: 12px;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            z-index: 10;
+        }
+        
+        .map-pin:hover + .map-tooltip {
+            opacity: 1;
+        }
+        
+        /* Professional styling */
+        .gradient-bg {
+            background: linear-gradient(135deg, #dc2626, #ea580c, #d97706);
+        }
+        
+        .food-gradient {
+            background: linear-gradient(135deg, #fef2f2, #fee2e2, #fef3c7);
+        }
+        
+        .section-divider {
+            height: 4px;
+            background: linear-gradient(90deg, #dc2626, #ea580c, #d97706);
+            margin: 2rem 0;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-orange-50 to-red-50 text-gray-800">
+    <!-- Opening Animation -->
+    <div class="opening-screen">
+        <div class="logo-animation">
+            <div class="w-24 h-24 mx-auto mb-4 bg-white rounded-full flex items-center justify-center overflow-hidden">
+                <img src="path/to/your/logo.png" alt="TheFamilyFood Logo" class="w-full h-full object-cover">
+            </div>
+            <h1 class="handwriting text-6xl md:text-8xl text-white mb-4">TheFamilyFood</h1>
+            <p class="casual text-xl text-orange-100">Where Family Comes Together</p>
+            <div class="mt-6">
+                <div class="inline-block w-16 h-1 bg-orange-200 rounded animate-pulse"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="bg-white shadow-xl sticky top-0 z-50 border-b-4 border-red-500">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center space-x-3">
+                    <img src="path/to/your/logo.png" alt="TheFamilyFood Logo" class="logo-image">
+                    <div class="handwriting text-3xl text-red-600 font-bold">TheFamilyFood</div>
+                </div>
+                <div class="hidden md:flex space-x-8">
+                    <button onclick="showPage('home')" class="nav-btn casual text-gray-700 hover:text-red-600 transition-colors font-medium">Home</button>
+                    <button onclick="showPage('about')" class="nav-btn casual text-gray-700 hover:text-red-600 transition-colors font-medium">About Us</button>
+                    <button onclick="showPage('menu')" class="nav-btn casual text-gray-700 hover:text-red-600 transition-colors font-medium">Menu</button>
+                    <button onclick="showPage('gallery')" class="nav-btn casual text-gray-700 hover:text-red-600 transition-colors font-medium">Gallery</button>
+                    <button onclick="showPage('branches')" class="nav-btn casual text-gray-700 hover:text-red-600 transition-colors font-medium">Branches</button>
+                    <button onclick="showPage('contact')" class="nav-btn casual text-gray-700 hover:text-red-600 transition-colors font-medium">Contact</button>
+                </div>
+                <button id="mobile-menu-btn" class="md:hidden text-gray-700">
+                    <i class="fas fa-bars text-2xl"></i>
+                </button>
+            </div>
+            <!-- Mobile Menu -->
+            <div id="mobile-menu" class="hidden md:hidden pb-4">
+                <button onclick="showPage('home')" class="block w-full text-left py-2 casual text-gray-700 hover:text-red-600">Home</button>
+                <button onclick="showPage('about')" class="block w-full text-left py-2 casual text-gray-700 hover:text-red-600">About Us</button>
+                <button onclick="showPage('menu')" class="block w-full text-left py-2 casual text-gray-700 hover:text-red-600">Menu</button>
+                <button onclick="showPage('gallery')" class="block w-full text-left py-2 casual text-gray-700 hover:text-red-600">Gallery</button>
+                <button onclick="showPage('branches')" class="block w-full text-left py-2 casual text-gray-700 hover:text-red-600">Branches</button>
+                <button onclick="showPage('contact')" class="block w-full text-left py-2 casual text-gray-700 hover:text-red-600">Contact</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Home Page -->
+    <div id="home" class="page active">
+        <!-- Hero Section -->
+        <section class="gradient-bg py-20 relative overflow-hidden">
+            <div class="absolute inset-0 opacity-10">
+                <div class="w-full h-full bg-black bg-opacity-20"></div>
+            </div>
+            <div class="container mx-auto px-4 text-center relative z-10">
+                <div class="mb-8">
+                    <div class="w-32 h-32 mx-auto mb-6 overflow-hidden rounded-full">
+                        <img src="path/to/your/hero-image.jpg" alt="Restaurant Hero Image" class="w-full h-full object-cover">
+                    </div>
+                </div>
+                <h1 class="handwriting text-5xl md:text-7xl text-white mb-6 drop-shadow-lg">Welcome to TheFamilyFood</h1>
+                <p class="casual text-xl md:text-2xl text-orange-100 mb-8 max-w-3xl mx-auto drop-shadow">Swadisht vegetarian khana with pyaar aur tradition ke saath - Ghar jaisa swad, restaurant mein!</p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <button onclick="showPage('menu')" class="hover-lift bg-white text-red-600 px-8 py-4 rounded-full casual text-lg font-bold shadow-lg">View Our Menu</button>
+                    <button onclick="showPage('contact')" class="hover-lift border-3 border-white text-white px-8 py-4 rounded-full casual text-lg font-bold shadow-lg">Make Reservation</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section class="py-20 bg-white">
+            <div class="container mx-auto px-4">
+                <h2 class="handwriting text-5xl text-center text-red-700 mb-4">Why Choose Us?</h2>
+                <div class="section-divider w-24 mx-auto"></div>
+                <div class="grid md:grid-cols-3 gap-8 mt-12">
+                    <div class="hover-lift bg-gradient-to-br from-red-50 to-orange-50 p-8 rounded-xl shadow-lg text-center border border-red-100">
+                        <div class="w-24 h-24 mx-auto mb-6 overflow-hidden rounded-full">
+                            <img src="path/to/your/feature1.jpg" alt="Made with Love" class="w-full h-full object-cover">
+                        </div>
+                        <h3 class="handwriting text-3xl text-red-700 mb-4">Made with Love</h3>
+                        <p class="casual text-gray-600 text-lg">Every dish is prepared with care and passion, just like home</p>
+                    </div>
+                    <div class="hover-lift bg-gradient-to-br from-orange-50 to-yellow-50 p-8 rounded-xl shadow-lg text-center border border-orange-100">
+                        <div class="w-24 h-24 mx-auto mb-6 overflow-hidden rounded-full">
+                            <img src="path/to/your/feature2.jpg" alt="Fresh Ingredients" class="w-full h-full object-cover">
+                        </div>
+                        <h3 class="handwriting text-3xl text-red-700 mb-4">Fresh Ingredients</h3>
+                        <p class="casual text-gray-600 text-lg">We source the finest, freshest ingredients daily</p>
+                    </div>
+                    <div class="hover-lift bg-gradient-to-br from-yellow-50 to-red-50 p-8 rounded-xl shadow-lg text-center border border-yellow-100">
+                        <div class="w-24 h-24 mx-auto mb-6 overflow-hidden rounded-full">
+                            <img src="path/to/your/feature3.jpg" alt="Family Atmosphere" class="w-full h-full object-cover">
+                        </div>
+                        <h3 class="handwriting text-3xl text-red-700 mb-4">Family Atmosphere</h3>
+                        <p class="casual text-gray-600 text-lg">A warm, welcoming space for families to gather</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Online Ordering Section -->
+        <section class="food-gradient py-20">
+            <div class="container mx-auto px-4 text-center">
+                <h2 class="handwriting text-5xl text-red-700 mb-4">Order Online</h2>
+                <div class="section-divider w-24 mx-auto"></div>
+                <p class="casual text-xl text-gray-700 mb-12 mt-8">Enjoy our delicious food from the comfort of your home</p>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto">
+                    <a href="#" class="hover-lift bg-white rounded-xl shadow-lg p-6 text-center">
+                        <img src="path/to/your/zomato-logo.jpg" alt="Zomato" class="w-full h-20 object-contain mb-3">
+                        <p class="casual font-bold text-gray-700">Zomato</p>
+                    </a>
+                    <a href="#" class="hover-lift bg-white rounded-xl shadow-lg p-6 text-center">
+                        <img src="path/to/your/swiggy-logo.jpg" alt="Swiggy" class="w-full h-20 object-contain mb-3">
+                        <p class="casual font-bold text-gray-700">Swiggy</p>
+                    </a>
+                    <a href="#" class="hover-lift bg-white rounded-xl shadow-lg p-6 text-center">
+                        <img src="path/to/your/eatclub-logo.jpg" alt="EatClub" class="w-full h-20 object-contain mb-3">
+                        <p class="casual font-bold text-gray-700">EatClub</p>
+                    </a>
+                    <a href="#" class="hover-lift bg-white rounded-xl shadow-lg p-6 text-center">
+                        <img src="path/to/your/magicpin-logo.jpg" alt="Magicpin" class="w-full h-20 object-contain mb-3">
+                        <p class="casual font-bold text-gray-700">Magicpin</p>
+                    </a>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- About Us Page -->
+    <div id="about" class="page">
+        <section class="py-20">
+            <div class="container mx-auto px-4">
+                <div class="text-center mb-12">
+                    <div class="flex items-center justify-center space-x-3 mb-6">
+                        <img src="path/to/your/logo.png" alt="TheFamilyFood Logo" class="logo-image">
+                        <h1 class="handwriting text-6xl text-red-700">About TheFamilyFood</h1>
+                    </div>
+                    <div class="section-divider w-32 mx-auto"></div>
+                </div>
+                
+                <div class="max-w-6xl mx-auto">
+                    <!-- Main Story Section -->
+                    <div class="bg-white rounded-2xl shadow-xl p-8 mb-12 border border-red-100">
+                        <div class="grid md:grid-cols-2 gap-8 items-center">
+                            <div>
+                                <h2 class="handwriting text-4xl text-red-600 mb-6">Our Story</h2>
+                                <p class="casual text-lg text-gray-700 mb-4 leading-relaxed">
+                                    1985 mein Sharma family ne ek chhota sa vegetarian restaurant shuru kiya tha ek simple sapne ke saath - families ko authentic, ghar jaisa khana dena aur unhe ek saath laana.
+                                </p>
+                                <p class="casual text-lg text-gray-700 mb-4 leading-relaxed">
+                                    Jo baat nani ke kitchen mein shuru hui thi, aaj ek famous restaurant chain ban gayi hai. Lekin humne apni jaadein kabhi nahi bhooli. Har recipe abhi bhi traditional family formulas par based hai jo generations se chali aa rahi hai.
+                                </p>
+                                <p class="casual text-lg text-gray-700 leading-relaxed">
+                                    Aaj hum hazaaron families ko serve karte hain, lekin quality, warmth, aur authentic vegetarian flavors ke liye wahi commitment hai jo shuru mein thi. Pure vegetarian, pure swad!
+                                </p>
+                            </div>
+                            <div class="w-full h-80 overflow-hidden rounded-xl">
+                                <img src="path/to/your/story-image.jpg" alt="Restaurant Story" class="restaurant-image w-full h-full">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Mission & Values -->
+                    <div class="grid md:grid-cols-2 gap-8 mb-12">
+                        <div class="bg-gradient-to-br from-red-50 to-orange-50 rounded-2xl shadow-lg p-8 border border-red-100">
+                            <h3 class="handwriting text-3xl text-red-600 mb-6">Our Mission</h3>
+                            <p class="casual text-gray-700 text-lg leading-relaxed">To create memorable dining experiences that bring families and communities together through exceptional food and warm hospitality.</p>
+                            <div class="w-full h-40 overflow-hidden rounded-xl mt-6">
+                                <img src="path/to/your/mission-image.jpg" alt="Our Mission" class="restaurant-image w-full h-full">
+                            </div>
+                        </div>
+                        <div class="bg-gradient-to-br from-orange-50 to-yellow-50 rounded-2xl shadow-lg p-8 border border-orange-100">
+                            <h3 class="handwriting text-3xl text-red-600 mb-6">Our Values</h3>
+                            <ul class="casual text-gray-700 space-y-3 text-lg">
+                                <li class="flex items-center"><i class="fas fa-heart text-red-500 mr-3"></i>Family-first approach</li>
+                                <li class="flex items-center"><i class="fas fa-leaf text-green-500 mr-3"></i>Fresh, quality ingredients</li>
+                                <li class="flex items-center"><i class="fas fa-users text-blue-500 mr-3"></i>Community involvement</li>
+                                <li class="flex items-center"><i class="fas fa-recycle text-green-600 mr-3"></i>Sustainable practices</li>
+                            </ul>
+                            <div class="w-full h-40 overflow-hidden rounded-xl mt-6">
+                                <img src="path/to/your/values-image.jpg" alt="Our Values" class="restaurant-image w-full h-full">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Team Section -->
+                    <div class="bg-white rounded-2xl shadow-xl p-8 border border-red-100">
+                        <h3 class="handwriting text-4xl text-red-600 mb-8 text-center">Meet Our Family</h3>
+                        <div class="grid md:grid-cols-3 gap-8">
+                            <div class="text-center">
+                                <div class="w-32 h-32 mx-auto mb-4 overflow-hidden rounded-full">
+                                    <img src="path/to/your/chef-photo.jpg" alt="Birju Maharaj Ji" class="w-full h-full object-cover">
+                                </div>
+                                <h4 class="handwriting text-2xl text-red-600 mb-2">Birju Maharaj Ji</h4>
+                                <p class="casual text-gray-600">30+ saal ka vegetarian cooking experience</p>
+                            </div>
+                            <div class="text-center">
+                                <div class="w-32 h-32 mx-auto mb-4 overflow-hidden rounded-full">
+                                    <img src="path/to/your/manager-photo.jpg" alt="Manager Harshit" class="w-full h-full object-cover">
+                                </div>
+                                <h4 class="handwriting text-2xl text-red-600 mb-2">Manager Harshit</h4>
+                                <p class="casual text-gray-600">Har customer ko best service dete hain</p>
+                            </div>
+                            <div class="text-center">
+                                <div class="w-32 h-32 mx-auto mb-4 overflow-hidden rounded-full">
+                                    <img src="path/to/your/owner-photo.jpg" alt="Owner Akash" class="w-full h-full object-cover">
+                                </div>
+                                <h4 class="handwriting text-2xl text-red-600 mb-2">Owner Akash</h4>
+                                <p class="casual text-gray-600">Family tradition ko aage badhate hain</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Menu Page -->
+    <div id="menu" class="page">
+        <section class="py-20">
+            <div class="container mx-auto px-4">
+                <div class="text-center mb-12">
+                    <div class="flex items-center justify-center space-x-3 mb-6">
+                        <img src="path/to/your/logo.png" alt="TheFamilyFood Logo" class="logo-image">
+                        <h1 class="handwriting text-6xl text-red-700">Our Menu</h1>
+                    </div>
+                    <div class="section-divider w-32 mx-auto"></div>
+                    <p class="casual text-xl text-gray-600 mb-8 mt-8">Discover our delicious selection of family favorites</p>
+                    <button onclick="downloadMenu()" class="hover-lift bg-red-600 text-white px-8 py-4 rounded-xl casual font-bold shadow-lg">
+                        <i class="fas fa-download mr-2"></i>Download Full Menu PDF
+                    </button>
+                </div>
+
+                <!-- Menu Categories -->
+                <div class="grid md:grid-cols-3 gap-8 mb-12">
+                    <div class="menu-category bg-white rounded-2xl shadow-xl p-8 text-center border-2" onclick="showMenuCategory('starters')">
+                        <div class="w-24 h-24 mx-auto mb-6 overflow-hidden rounded-full">
+                            <img src="path/to/your/starters-category.jpg" alt="Starters" class="w-full h-full object-cover">
+                        </div>
+                        <h3 class="handwriting text-3xl text-red-600 mb-4">Starters</h3>
+                        <p class="casual text-gray-600 mb-4">Chaliye shuru krte hai</p>
+                        <div class="bg-red-100 text-red-600 px-4 py-2 rounded-full casual font-bold inline-block">3 Items</div>
+                    </div>
+
+                    <div class="menu-category bg-white rounded-2xl shadow-xl p-8 text-center border-2" onclick="showMenuCategory('main-course')">
+                        <div class="w-24 h-24 mx-auto mb-6 overflow-hidden rounded-full">
+                            <img src="path/to/your/main-course-category.jpg" alt="Main Course" class="w-full h-full object-cover">
+                        </div>
+                        <h3 class="handwriting text-3xl text-red-600 mb-4">Main Course</h3>
+                        <p class="casual text-gray-600 mb-4">Asli maza to yaha hai</p>
+                        <div class="bg-red-100 text-red-600 px-4 py-2 rounded-full casual font-bold inline-block">6 Items</div>
+                    </div>
+
+                    <div class="menu-category bg-white rounded-2xl shadow-xl p-8 text-center border-2" onclick="showMenuCategory('mithai')">
+                        <div class="w-24 h-24 mx-auto mb-6 overflow-hidden rounded-full">
+                            <img src="path/to/your/mithai-category.jpg" alt="Mithai" class="w-full h-full object-cover">
+                        </div>
+                        <h3 class="handwriting text-3xl text-red-600 mb-4">Mithai</h3>
+                        <p class="casual text-gray-600 mb-4">Kuch mitha ho jaaye</p>
+                        <div class="bg-red-100 text-red-600 px-4 py-2 rounded-full casual font-bold inline-block">4 Items</div>
+                    </div>
+                </div>
+
+                <!-- Menu Items Display -->
+                <div id="menu-items" class="hidden">
+                    <div class="text-center mb-8">
+                        <button onclick="hideMenuItems()" class="bg-gray-500 text-white px-6 py-3 rounded-lg casual font-medium">
+                            <i class="fas fa-arrow-left mr-2"></i>Back to Categories
+                        </button>
+                    </div>
+                    <div id="menu-content" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Gallery Page -->
+    <div id="gallery" class="page">
+        <section class="py-20">
+            <div class="container mx-auto px-4">
+                <div class="text-center mb-12">
+                    <div class="flex items-center justify-center space-x-3 mb-6">
+                        <img src="path/to/your/logo.png" alt="TheFamilyFood Logo" class="logo-image">
+                        <h1 class="handwriting text-6xl text-red-700">Photo Gallery</h1>
+                    </div>
+                    <div class="section-divider w-32 mx-auto"></div>
+                </div>
+                
+                <!-- Gallery Tabs -->
+                <div class="flex justify-center mb-12">
+                    <div class="bg-white rounded-xl shadow-lg p-2 border border-red-100">
+                        <button onclick="showGalleryTab('food')" id="food-tab" class="gallery-tab px-8 py-3 rounded-lg casual font-bold bg-red-600 text-white">Food Gallery</button>
+                        <button onclick="showGalleryTab('interior')" id="interior-tab" class="gallery-tab px-8 py-3 rounded-lg casual font-bold text-gray-600">Interior Gallery</button>
+                    </div>
+                </div>
+
+                <!-- Food Gallery -->
+                <div id="food-gallery" class="gallery-content grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                    <div class="gallery-item aspect-square rounded-xl overflow-hidden shadow-lg" onclick="openModal('path/to/your/food1.jpg', 'Delicious Pasta')">
+                        <img src="path/to/your/food1.jpg" alt="Delicious Pasta" class="w-full h-full object-cover">
+                    </div>
+                    <div class="gallery-item aspect-square rounded-xl overflow-hidden shadow-lg" onclick="openModal('path/to/your/food2.jpg', 'Family Pizza')">
+                        <img src="path/to/your/food2.jpg" alt="Family Pizza" class="w-full h-full object-cover">
+                    </div>
+                    <div class="gallery-item aspect-square rounded-xl overflow-hidden shadow-lg" onclick="openModal('path/to/your/food3.jpg', 'Fresh Salad')">
+                        <img src="path/to/your/food3.jpg" alt="Fresh Salad" class="w-full h-full object-cover">
+                    </div>
+                    <div class="gallery-item aspect-square rounded-xl overflow-hidden shadow-lg" onclick="openModal('path/to/your/food4.jpg', 'Homemade Dessert')">
+                        <img src="path/to/your/food4.jpg" alt="Homemade Dessert" class="w-full h-full object-cover">
+                    </div>
+                    <div class="gallery-item aspect-square rounded-xl overflow-hidden shadow-lg" onclick="openModal('path/to/your/food5.jpg', 'Gourmet Burger')">
+                        <img src="path/to/your/food5.jpg" alt="Gourmet Burger" class="w-full h-full object-cover">
+                    </div>
+                    <div class="gallery-item aspect-square rounded-xl overflow-hidden shadow-lg" onclick="openModal('path/to/your/food6.jpg', 'Family Feast')">
+                        <img src="path/to/your/food6.jpg" alt="Family Feast" class="w-full h-full object-cover">
+                    </div>
+                </div>
+
+                <!-- Interior Gallery -->
+                <div id="interior-gallery" class="gallery-content hidden grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                    <div class="gallery-item aspect-square rounded-xl overflow-hidden shadow-lg" onclick="openModal('path/to/your/interior1.jpg', 'Cozy Dining Area')">
+                        <img src="path/to/your/interior1.jpg" alt="Cozy Dining Area" class="w-full h-full object-cover">
+                    </div>
+                    <div class="gallery-item aspect-square rounded-xl overflow-hidden shadow-lg" onclick="openModal('path/to/your/interior2.jpg', 'Ambient Lighting')">
+                        <img src="path/to/your/interior2.jpg" alt="Ambient Lighting" class="w-full h-full object-cover">
+                    </div>
+                    <div class="gallery-item aspect-square rounded-xl overflow-hidden shadow-lg" onclick="openModal('path/to/your/interior3.jpg', 'Garden View')">
+                        <img src="path/to/your/interior3.jpg" alt="Garden View" class="w-full h-full object-cover">
+                    </div>
+                    <div class="gallery-item aspect-square rounded-xl overflow-hidden shadow-lg" onclick="openModal('path/to/your/interior4.jpg', 'Private Dining')">
+                        <img src="path/to/your/interior4.jpg" alt="Private Dining" class="w-full h-full object-cover">
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Branches Page -->
+    <div id="branches" class="page">
+        <section class="py-20">
+            <div class="container mx-auto px-4">
+                <div class="text-center mb-12">
+                    <div class="flex items-center justify-center space-x-3 mb-6">
+                        <img src="path/to/your/logo.png" alt="TheFamilyFood Logo" class="logo-image">
+                        <h1 class="handwriting text-6xl text-red-700">Our Branches</h1>
+                    </div>
+                    <div class="section-divider w-32 mx-auto"></div>
+                </div>
+                
+                <!-- Interactive Map -->
+                <div class="bg-white rounded-2xl shadow-xl p-8 mb-12 border border-red-100">
+                    <h2 class="handwriting text-3xl text-red-600 mb-6 text-center">Find Us on the Map</h2>
+                    <div class="map-container h-96 relative">
+                        <img src="path/to/your/map-background.jpg" alt="Interactive Map" class="w-full h-full object-cover rounded-xl">
+                        
+                        <!-- Map Pins -->
+                        <div class="map-pin" style="top: 25%; left: 30%;" data-branch="downtown"></div>
+                        <div class="map-tooltip" style="top: 20%; left: 32%;">Downtown Location</div>
+                        
+                        <div class="map-pin" style="top: 40%; left: 20%;" data-branch="westside"></div>
+                        <div class="map-tooltip" style="top: 35%; left: 22%;">Westside Location</div>
+                        
+                        <div class="map-pin" style="top: 35%; left: 70%;" data-branch="eastside"></div>
+                        <div class="map-tooltip" style="top: 30%; left: 72%;">Eastside Location</div>
+                        
+                        <div class="map-pin" style="top: 60%; left: 50%;" data-branch="suburban"></div>
+                        <div class="map-tooltip" style="top: 55%; left: 52%;">Suburban Location</div>
+                    </div>
+                </div>
+                
+                <!-- Branch Details -->
+                <div class="grid md:grid-cols-2 gap-8">
+                    <!-- Branch 1 -->
+                    <div class="hover-lift bg-white rounded-2xl shadow-xl p-8 border border-red-100">
+                        <div class="flex items-start space-x-6">
+                            <div class="w-24 h-24 overflow-hidden rounded-xl flex-shrink-0">
+                                <img src="path/to/your/branch1.jpg" alt="Greater Noida Location" class="w-full h-full object-cover">
+                            </div>
+                            <div class="flex-1">
+                                <h3 class="handwriting text-3xl text-red-600 mb-4">Greater Noida</h3>
+                                <div class="space-y-3">
+                                    <p class="casual flex items-center text-lg"><i class="fas fa-map-marker-alt text-red-500 mr-3"></i>Sector 18, Greater Noida, UP 201308</p>
+                                    <p class="casual flex items-center text-lg"><i class="fas fa-phone text-red-500 mr-3"></i>+91 98765-43210</p>
+                                    <p class="casual flex items-center text-lg"><i class="fas fa-clock text-red-500 mr-3"></i>Mon-Sun: 11AM - 11PM</p>
+                                    <div class="flex items-center mt-4">
+                                        <div class="flex text-yellow-400 mr-3">
+                                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                                        </div>
+                                        <span class="casual text-gray-600 text-lg">4.8/5 (324 reviews)</span>
+                                    </div>
+                                    <button onclick="openGoogleMaps('Sector 18, Greater Noida, UP')" class="bg-red-600 text-white px-6 py-3 rounded-lg casual font-bold mt-4 hover-lift">
+                                        <i class="fas fa-directions mr-2"></i>Get Directions
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Branch 2 -->
+                    <div class="hover-lift bg-white rounded-2xl shadow-xl p-8 border border-red-100">
+                        <div class="flex items-start space-x-6">
+                            <div class="w-24 h-24 overflow-hidden rounded-xl flex-shrink-0">
+                                <img src="path/to/your/branch2.jpg" alt="Delhi Location" class="w-full h-full object-cover">
+                            </div>
+                            <div class="flex-1">
+                                <h3 class="handwriting text-3xl text-red-600 mb-4">Delhi</h3>
+                                <div class="space-y-3">
+                                    <p class="casual flex items-center text-lg"><i class="fas fa-map-marker-alt text-red-500 mr-3"></i>Connaught Place, New Delhi 110001</p>
+                                    <p class="casual flex items-center text-lg"><i class="fas fa-phone text-red-500 mr-3"></i>+91 98765-43211</p>
+                                    <p class="casual flex items-center text-lg"><i class="fas fa-clock text-red-500 mr-3"></i>Mon-Sun: 11AM - 11PM</p>
+                                    <div class="flex items-center mt-4">
+                                        <div class="flex text-yellow-400 mr-3">
+                                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                                        </div>
+                                        <span class="casual text-gray-600 text-lg">4.9/5 (287 reviews)</span>
+                                    </div>
+                                    <button onclick="openGoogleMaps('Connaught Place, New Delhi')" class="bg-red-600 text-white px-6 py-3 rounded-lg casual font-bold mt-4 hover-lift">
+                                        <i class="fas fa-directions mr-2"></i>Get Directions
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Branch 3 -->
+                    <div class="hover-lift bg-white rounded-2xl shadow-xl p-8 border border-red-100">
+                        <div class="flex items-start space-x-6">
+                            <div class="w-24 h-24 overflow-hidden rounded-xl flex-shrink-0">
+                                <img src="path/to/your/branch3.jpg" alt="Gurgaon Location" class="w-full h-full object-cover">
+                            </div>
+                            <div class="flex-1">
+                                <h3 class="handwriting text-3xl text-red-600 mb-4">Gurgaon</h3>
+                                <div class="space-y-3">
+                                    <p class="casual flex items-center text-lg"><i class="fas fa-map-marker-alt text-red-500 mr-3"></i>Cyber City, Gurgaon, HR 122002</p>
+                                    <p class="casual flex items-center text-lg"><i class="fas fa-phone text-red-500 mr-3"></i>+91 98765-43212</p>
+                                    <p class="casual flex items-center text-lg"><i class="fas fa-clock text-red-500 mr-3"></i>Mon-Sun: 11AM - 11PM</p>
+                                    <div class="flex items-center mt-4">
+                                        <div class="flex text-yellow-400 mr-3">
+                                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                                        </div>
+                                        <span class="casual text-gray-600 text-lg">4.7/5 (412 reviews)</span>
+                                    </div>
+                                    <button onclick="openGoogleMaps('Cyber City, Gurgaon, HR')" class="bg-red-600 text-white px-6 py-3 rounded-lg casual font-bold mt-4 hover-lift">
+                                        <i class="fas fa-directions mr-2"></i>Get Directions
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Branch 4 -->
+                    <div class="hover-lift bg-white rounded-2xl shadow-xl p-8 border border-red-100">
+                        <div class="flex items-start space-x-6">
+                            <div class="w-24 h-24 overflow-hidden rounded-xl flex-shrink-0">
+                                <img src="path/to/your/branch4.jpg" alt="Noida Location" class="w-full h-full object-cover">
+                            </div>
+                            <div class="flex-1">
+                                <h3 class="handwriting text-3xl text-red-600 mb-4">Noida</h3>
+                                <div class="space-y-3">
+                                    <p class="casual flex items-center text-lg"><i class="fas fa-map-marker-alt text-red-500 mr-3"></i>Sector 62, Noida, UP 201309</p>
+                                    <p class="casual flex items-center text-lg"><i class="fas fa-phone text-red-500 mr-3"></i>+91 98765-43213</p>
+                                    <p class="casual flex items-center text-lg"><i class="fas fa-clock text-red-500 mr-3"></i>Mon-Sun: 11AM - 11PM</p>
+                                    <div class="flex items-center mt-4">
+                                        <div class="flex text-yellow-400 mr-3">
+                                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                                        </div>
+                                        <span class="casual text-gray-600 text-lg">4.8/5 (356 reviews)</span>
+                                    </div>
+                                    <button onclick="openGoogleMaps('Sector 62, Noida, UP')" class="bg-red-600 text-white px-6 py-3 rounded-lg casual font-bold mt-4 hover-lift">
+                                        <i class="fas fa-directions mr-2"></i>Get Directions
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Contact Page -->
+    <div id="contact" class="page">
+        <section class="py-20">
+            <div class="container mx-auto px-4">
+                <div class="text-center mb-12">
+                    <div class="flex items-center justify-center space-x-3 mb-6">
+                        <div class="logo-placeholder">LOGO</div>
+                        <h1 class="handwriting text-6xl text-red-700">Contact Us</h1>
+                    </div>
+                    <div class="section-divider w-32 mx-auto"></div>
+                </div>
+                
+                <div class="grid lg:grid-cols-2 gap-12">
+                    <!-- Contact Form -->
+                    <div class="bg-white rounded-2xl shadow-xl p-8 border border-red-100">
+                        <div class="flex items-center space-x-4 mb-6">
+                            <img src="path/to/your/contact-icon.jpg" alt="Contact Icon" class="w-16 h-16 object-cover rounded-lg">
+                            <h2 class="handwriting text-4xl text-red-600">Send us a Message</h2>
+                        </div>
+                        <form id="contact-form" class="space-y-6">
+                            <div class="grid md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="casual block text-gray-700 mb-2 font-medium">Name</label>
+                                    <input type="text" class="w-full p-4 border-2 border-gray-200 rounded-lg focus:border-red-500 focus:outline-none transition-colors" required>
+                                </div>
+                                <div>
+                                    <label class="casual block text-gray-700 mb-2 font-medium">Email</label>
+                                    <input type="email" class="w-full p-4 border-2 border-gray-200 rounded-lg focus:border-red-500 focus:outline-none transition-colors" required>
+                                </div>
+                            </div>
+                            <div>
+                                <label class="casual block text-gray-700 mb-2 font-medium">Phone</label>
+                                <input type="tel" class="w-full p-4 border-2 border-gray-200 rounded-lg focus:border-red-500 focus:outline-none transition-colors">
+                            </div>
+                            <div>
+                                <label class="casual block text-gray-700 mb-2 font-medium">Message</label>
+                                <textarea rows="5" class="w-full p-4 border-2 border-gray-200 rounded-lg focus:border-red-500 focus:outline-none transition-colors" required></textarea>
+                            </div>
+                            <button type="submit" class="hover-lift bg-red-600 text-white px-8 py-4 rounded-lg casual font-bold w-full shadow-lg">
+                                <i class="fas fa-paper-plane mr-2"></i>Send Message
+                            </button>
+                        </form>
+                        <div class="mt-6 p-4 bg-red-50 border border-red-200 rounded-lg">
+                            <p class="casual text-red-700">
+                                <i class="fas fa-info-circle mr-2"></i>
+                                <strong>Demo Notice:</strong> This is a sample contact form. In a real website, this would send your message to the restaurant.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Contact Info & Services -->
+                    <div class="space-y-8">
+                        <!-- Contact Info -->
+                        <div class="bg-white rounded-2xl shadow-xl p-8 border border-red-100">
+                            <div class="flex items-center space-x-4 mb-6">
+                                <img src="path/to/your/info-icon.jpg" alt="Information Icon" class="w-16 h-16 object-cover rounded-lg">
+                                <h2 class="handwriting text-4xl text-red-600">Get in Touch</h2>
+                            </div>
+                            <div class="space-y-4">
+                                <p class="casual flex items-center text-lg"><i class="fas fa-phone text-red-500 mr-4 text-xl"></i>+91 98765-43210</p>
+                                <p class="casual flex items-center text-lg"><i class="fas fa-envelope text-red-500 mr-4 text-xl"></i>info@thefamilyfood.com</p>
+                                <p class="casual flex items-center text-lg"><i class="fas fa-map-marker-alt text-red-500 mr-4 text-xl"></i>Sector 18, Greater Noida, UP</p>
+                                <p class="casual flex items-center text-lg"><i class="fas fa-clock text-red-500 mr-4 text-xl"></i>Mon-Sun: 11AM - 11PM</p>
+                            </div>
+                            <img src="path/to/your/contact-info-image.jpg" alt="Contact Information" class="w-full h-40 object-cover rounded-xl mt-6">
+                        </div>
+
+                        <!-- Hosting Services -->
+                        <div class="bg-white rounded-2xl shadow-xl p-8 border border-red-100">
+                            <div class="flex items-center space-x-4 mb-6">
+                                <img src="path/to/your/event-icon.jpg" alt="Event Hosting Icon" class="w-16 h-16 object-cover rounded-lg">
+                                <h2 class="handwriting text-4xl text-red-600">Hosting Services</h2>
+                            </div>
+                            <div class="grid grid-cols-2 gap-4 mb-6">
+                                <div class="flex items-center p-3 bg-red-50 rounded-lg">
+                                    <i class="fas fa-birthday-cake text-red-500 mr-3 text-xl"></i>
+                                    <span class="casual font-medium">Birthday Parties</span>
+                                </div>
+                                <div class="flex items-center p-3 bg-red-50 rounded-lg">
+                                    <i class="fas fa-heart text-red-500 mr-3 text-xl"></i>
+                                    <span class="casual font-medium">Wedding Receptions</span>
+                                </div>
+                                <div class="flex items-center p-3 bg-red-50 rounded-lg">
+                                    <i class="fas fa-briefcase text-red-500 mr-3 text-xl"></i>
+                                    <span class="casual font-medium">Corporate Events</span>
+                                </div>
+                                <div class="flex items-center p-3 bg-red-50 rounded-lg">
+                                    <i class="fas fa-users text-red-500 mr-3 text-xl"></i>
+                                    <span class="casual font-medium">Family Gatherings</span>
+                                </div>
+                            </div>
+                            <button onclick="alert('Thank you for your interest! Please call us at +91 98765-43210 to discuss your event needs.')" class="hover-lift bg-red-600 text-white px-8 py-4 rounded-lg casual font-bold w-full shadow-lg">
+                                <i class="fas fa-calendar-plus mr-2"></i>Book Event
+                            </button>
+                            <img src="path/to/your/event-hosting-image.jpg" alt="Event Hosting" class="w-full h-32 object-cover rounded-xl mt-6">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-16">
+        <div class="container mx-auto px-4">
+            <div class="grid md:grid-cols-4 gap-8">
+                <div>
+                    <div class="flex items-center space-x-3 mb-6">
+                        <img src="path/to/your/logo.png" alt="TheFamilyFood Logo" class="logo-image">
+                        <h3 class="handwriting text-3xl text-red-400">TheFamilyFood</h3>
+                    </div>
+                    <p class="casual text-gray-300 text-lg leading-relaxed">Where family comes together through the love of great food and warm hospitality.</p>
+                </div>
+                <div>
+                    <h4 class="casual font-bold mb-6 text-xl">Quick Links</h4>
+                    <div class="space-y-3">
+                        <button onclick="showPage('home')" class="casual text-gray-300 hover:text-red-400 block transition-colors text-lg">Home</button>
+                        <button onclick="showPage('menu')" class="casual text-gray-300 hover:text-red-400 block transition-colors text-lg">Menu</button>
+                        <button onclick="showPage('branches')" class="casual text-gray-300 hover:text-red-400 block transition-colors text-lg">Locations</button>
+                        <button onclick="showPage('contact')" class="casual text-gray-300 hover:text-red-400 block transition-colors text-lg">Contact</button>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="casual font-bold mb-6 text-xl">Contact Info</h4>
+                    <div class="space-y-3 casual text-gray-300 text-lg">
+                        <p><i class="fas fa-phone text-red-400 mr-2"></i>+91 98765-43210</p>
+                        <p><i class="fas fa-envelope text-red-400 mr-2"></i>info@thefamilyfood.com</p>
+                        <p><i class="fas fa-clock text-red-400 mr-2"></i>Mon-Sun: 11AM - 11PM</p>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="casual font-bold mb-6 text-xl">Follow Us</h4>
+                    <div class="flex space-x-4 mb-6">
+                        <a href="#" class="text-3xl text-gray-300 hover:text-blue-400 transition-colors"><i class="fab fa-facebook"></i></a>
+                        <a href="#" class="text-3xl text-gray-300 hover:text-pink-400 transition-colors"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-3xl text-gray-300 hover:text-blue-400 transition-colors"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-3xl text-gray-300 hover:text-red-400 transition-colors"><i class="fab fa-youtube"></i></a>
+                    </div>
+                    <img src="path/to/your/social-media-image.jpg" alt="Follow Us on Social Media" class="w-full h-24 object-cover rounded-lg">
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-12 pt-8 text-center">
+                <p class="casual text-gray-300 text-lg">&copy; 2024 TheFamilyFood. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modal for Gallery -->
+    <div id="gallery-modal" class="modal">
+        <div class="bg-white rounded-2xl p-8 max-w-lg mx-4 shadow-2xl">
+            <div class="text-center">
+                <img id="modal-image" src="" alt="" class="w-full h-64 object-cover rounded-xl mb-6">
+                <h3 id="modal-title" class="handwriting text-3xl text-red-600 mb-6"></h3>
+                <button onclick="closeModal()" class="bg-red-600 text-white px-8 py-3 rounded-lg casual font-bold hover-lift">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Menu data
+        const menuData = {
+            'starters': [
+                { name: 'Samosa', price: '₹20', description: 'Ek samosa jo kre dimaag shaant' },
+                { name: 'Cutlet', price: '₹15', description: 'Kurkure cutlet with pudina chutney' },
+                { name: 'Paneer Pakoda', price: '₹25', description: 'Ek cup chai and paneer pakoda' }
+            ],
+            'main-course': [
+                { name: 'Butter Naan', price: '₹8', description: 'Naan with butter' },
+                { name: 'Dal Makhni', price: '₹120', description: 'Rich and creamy dal makhni' },
+                { name: 'Paneer Masala', price: '₹150', description: 'Best paneer in town with authentic taste' },
+                { name: 'Mushroom Chilli', price: '₹160', description: 'Mushroom are dangerous only if it\'s not cooked here' },
+                { name: 'Veg Biryani', price: '₹110', description: 'Best biryani in town' },
+                { name: 'Raita', price: '₹60', description: 'Khaana is not complete without raita' }
+            ],
+            'mithai': [
+                { name: 'Gulab Jamun', price: '₹60', description: 'Sweet milk dumplings in syrup' },
+                { name: 'Rasgulla', price: '₹50', description: 'Soft cottage cheese balls in syrup' },
+                { name: 'Jalebi', price: '₹40', description: 'Crispy spirals soaked in sugar syrup' },
+                { name: 'Kheer', price: '₹55', description: 'Traditional rice pudding with nuts' }
+            ]
+        };
+
+        // Page Navigation
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            document.getElementById(pageId).classList.add('active');
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('text-red-600');
+                btn.classList.add('text-gray-700');
+            });
+            window.scrollTo(0, 0);
+        }
+
+        // Mobile Menu Toggle
+        document.getElementById('mobile-menu-btn').addEventListener('click', function() {
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Menu Category Functions
+        function showMenuCategory(category) {
+            const items = menuData[category];
+            const menuContent = document.getElementById('menu-content');
+            const menuItems = document.getElementById('menu-items');
+            
+            menuContent.innerHTML = '';
+            
+            items.forEach(item => {
+                const itemCard = document.createElement('div');
+                itemCard.className = 'bg-white rounded-2xl shadow-lg p-6 hover-lift border border-red-100';
+                itemCard.innerHTML = `
+                    <img src="path/to/your/menu-items/${item.name.toLowerCase().replace(/[^a-z0-9]/g, '-')}.jpg" alt="${item.name}" class="w-full h-48 object-cover rounded-xl mb-4">
+                    <h4 class="handwriting text-2xl text-red-600 mb-2">${item.name}</h4>
+                    <p class="casual text-gray-600 mb-3">${item.description}</p>
+                    <div class="flex justify-between items-center">
+                        <span class="casual text-2xl font-bold text-red-600">${item.price}</span>
+                        <button class="bg-red-600 text-white px-4 py-2 rounded-lg casual font-medium hover-lift">
+                            <i class="fas fa-plus mr-1"></i>Add
+                        </button>
+                    </div>
+                `;
+                menuContent.appendChild(itemCard);
+            });
+            
+            // Hide category selection and show items
+            document.querySelectorAll('.menu-category').forEach(cat => cat.style.display = 'none');
+            menuItems.classList.remove('hidden');
+        }
+
+        function hideMenuItems() {
+            document.getElementById('menu-items').classList.add('hidden');
+            document.querySelectorAll('.menu-category').forEach(cat => cat.style.display = 'block');
+        }
+
+        // Gallery Functions
+        function showGalleryTab(tabName) {
+            document.querySelectorAll('.gallery-content').forEach(content => {
+                content.classList.add('hidden');
+            });
+            document.getElementById(tabName + '-gallery').classList.remove('hidden');
+            
+            document.querySelectorAll('.gallery-tab').forEach(tab => {
+                tab.classList.remove('bg-red-600', 'text-white');
+                tab.classList.add('text-gray-600');
+            });
+            
+            document.getElementById(tabName + '-tab').classList.add('bg-red-600', 'text-white');
+            document.getElementById(tabName + '-tab').classList.remove('text-gray-600');
+        }
+
+        // Modal Functions
+        function openModal(image, title) {
+            document.getElementById('modal-image').src = image;
+            document.getElementById('modal-image').alt = title;
+            document.getElementById('modal-title').textContent = title;
+            document.getElementById('gallery-modal').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('gallery-modal').classList.remove('active');
+        }
+
+        // Utility Functions
+        function downloadMenu() {
+            const menuContent = `
+TheFamilyFood - Complete Menu
+
+STARTERS
+${menuData.starters.map(item => `${item.name} - ${item.price}`).join('\n')}
+
+MAIN COURSE
+${menuData['main-course'].map(item => `${item.name} - ${item.price}`).join('\n')}
+
+MITHAI
+${menuData.mithai.map(item => `${item.name} - ${item.price}`).join('\n')}
+
+Contact: (555) 123-FOOD
+Visit us at any of our 4 locations!
+            `;
+            
+            const blob = new Blob([menuContent], { type: 'text/plain' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'TheFamilyFood-Menu.txt';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+            
+            alert('Menu downloaded! (Note: In a real website, this would be a proper PDF file)');
+        }
+
+        function openGoogleMaps(address) {
+            const encodedAddress = encodeURIComponent(address);
+            window.open(`https://www.google.com/maps/search/${encodedAddress}`, '_blank');
+        }
+
+        // Contact Form
+        document.getElementById('contact-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Thank you for your message! We\'ll get back to you soon. (Note: This is a demo form)');
+            this.reset();
+        });
+
+        // Close modal when clicking outside
+        document.getElementById('gallery-modal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+
+        // Map pin interactions
+        document.querySelectorAll('.map-pin').forEach(pin => {
+            pin.addEventListener('click', function() {
+                const branch = this.getAttribute('data-branch');
+                alert(`Clicked on ${branch} location! In a real website, this would show more details or directions.`);
+            });
+        });
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(() => {
+                document.querySelector('.opening-screen').style.display = 'none';
+            }, 5000);
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96c14c8cc76fad28',t:'MTc1NDY4MDA3MS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
